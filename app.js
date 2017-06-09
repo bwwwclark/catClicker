@@ -1,7 +1,4 @@
 
-// var cats = $(".cat");
-// var buttons = $("button");
-
 var model = {
 	currentCat: null,
 	cats : [
@@ -60,13 +57,13 @@ var octopus = {
 		adminView.render();
 	},
 
-	updateCurrentCatInfo: function(newName,newImage,newCount){
-		model.currentCat.name = newName;
-		model.currentCat.image = newImage;
-		model.currentCat.count = newCount;
-		console.log(model.currentCat.name);
+	updateCurrentCatInfo: function(cat){
+		model.currentCat.name = cat.name;
+		model.currentCat.image = cat.image;
+		model.currentCat.count = cat.count;
 		catView.render();
 		adminView.render();
+		catListView.render();
 
 	}
 
@@ -140,10 +137,8 @@ var adminView = {
 		this.nameField = document.getElementById('nameField');
 		this.clickCount = document.getElementById('countField');
 		this.imageURL = document.getElementById('imageField');
-		this.submitButton = document.getElementById('submitButton');
-		this.formName=document.getElementById('nameField').value;
-
-		//console.log(this.adminSection);
+		this.saveButton = document.getElementById('saveButton');
+		this.cancelButton = document.getElementById('cancelButton');
 		this.adminSection.style.display = 'none';
 		
 
@@ -157,101 +152,45 @@ var adminView = {
 			}
 
 		};
+
+		var updateCat = function(){
+			var newCat = octopus.getCurrentCat();
+			console.log(document.getElementById('nameField').value);
+			this.count = document.getElementById('countField')
+			this.image = document.getElementById('imageField');
+			newCat.name = document.getElementById('nameField').value;
+			newCat.count = document.getElementById('countField').value;
+			newCat.image = this.image.value;
+			octopus.updateCurrentCatInfo(newCat);
+			console.log(newCat.name);
+			console.log(newCat);
+
+		}
+
+		var cancelUpdates = function(){
+			var currentCat = octopus.getCurrentCat();
+
+			this.nameField.value = currentCat.name;
+			document.getElementById('countField').value = currentCat.count;
+			document.getElementById('imageField').value = currentCat.image;
+			showAdminDiv();
+			
+		}
+
 		this.adminButton.addEventListener('click',showAdminDiv);
-		 //this.submitButton.addEventListener('submit',console.log(this.nameField));
 		this.render();
+		this.saveButton.addEventListener('click',function(){updateCat();});
+		this.cancelButton.addEventListener('click',function(){cancelUpdates();});
 	},
  
 	render: function(){
 		var currentCat = octopus.getCurrentCat();
-		//this.adminButton.addEventListener;
+
 		this.nameField.value = currentCat.name;
 		this.clickCount.value = currentCat.count;
 		this.imageURL.value = currentCat.image;
-		this.form = document.getElementById('form');
-		this.submitButton.onclick = "octopus.updateCurrentCatInfo(this.nameField.value,this.clickCount.value,this.currentCat.image)";
-		//this.submitButton.addEventListener("submit", octopus.updateCurrentCatInfo(this.nameField.value, this.imageURL.value, this.clickCount.value));
-		//this.submitButton.addEventListener('submit',console.log(this.nameField));
-
 	}
-
-	// submit: function(){
-	// 	//this.formAction = document.getElementById('formAction');
-	// 	this.form = document.getElementById('formAction');
-	// 	this.submitButton = document.getElementById('submitButton');
-	// 	var formName=document.getElementById('nameField').value;
-	// 	var formCount=document.getElementById('countField').value;
-	// 	var formImage=document.getElementById('imageField').value;
-	// 	var formSubmit=document.getElementById('formAction')
-	// 	// this.newName = document.getElementById('username').value;
-	// 	// this.newCount = this.clickCount.value;
-	// 	// this.imageURL = this.imageURL.value;
-	// 	//this.form.addEventListener('submit',console.log(formName));
-
-
-	// }
-
-
 };
 	
 octopus.init();
 
-
-
-	// show: function(){
-	// 	 var x = document.getElementById('admin-form');
- //    if (x.style.display === 'none') {
- //        x.style.display = 'block';
- //    } else {
- //        x.style.display = 'none';
- //    }
-	// },
-
-	// click: function(){
-	// 	var y = document.getElementById('adminButton');
-	// 	y.addEventListener('click', (function(){
-	// 			return function(){
-	// 				adminView.show();
-	// 				console.log("something something");
-	// 			};
-	// 		}));
-
-	// }
-// function showCat(cat){
-// 	$("#button"+cat).click(function){
-// 		$("#cat"+cat)
-// 	}
-// }
-
-// function hideAllCats(){
-// 	for (var i=0; i<cats.length; i++){
-// 		$(cats[i]).hide();
-// 	}
-// }
-
-// function bindButtonToCat(idNumber){
-// 	$("#button"+idNumber).click(function(){
-// 		hideAllCats();
-// 		$("#cat"+idNumber).show();
-// 	})
-// }
-
-// function bindCounterToCat(idNumber){
-// 	var cat = "#cat"+idNumber
-// 	$(cat).click(function(){
-// 		var count = $(cat+" > .counter").text();
-// 		count = parseInt(count) + 1;
-// 		$(cat+" > .counter").text(count);
-// 	})
-// }
-
-// for (var i=1; i<=buttons.length; i++){
-// 	bindButtonToCat(i);
-// }
-
-// for (var i=1; i<=cats.length; i++){
-// 	bindCounterToCat(i);
-// }
-
-// hideAllCats();
-// $("#cat1").show();
